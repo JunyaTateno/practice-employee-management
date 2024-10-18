@@ -1,5 +1,7 @@
 -- employees テーブルの作成
-CREATE TABLE IF NOT EXISTS employees (
+DROP TABLE IF EXISTS employees;
+
+CREATE TABLE employees (
     id          INT(6)        UNSIGNED ZEROFILL AUTO_INCREMENT PRIMARY KEY,           -- 社員ID
     family_name VARCHAR(30)   NOT NULL,                                               -- 名字
     first_name  VARCHAR(30)   NOT NULL,                                               -- 氏名

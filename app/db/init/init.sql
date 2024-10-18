@@ -6,6 +6,7 @@ USE company;
 
 -- ユーザーの作成と権限の付与
 -- TODO: userNameとpassは別途設定する
+DROP USER IF EXISTS 'userName'@'%';
 CREATE USER 'userName'@'%' IDENTIFIED BY 'pass';         
 GRANT ALL PRIVILEGES ON company.* TO 'userName'@'%';
 FLUSH PRIVILEGES;
