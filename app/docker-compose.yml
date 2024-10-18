@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: company
+      MYSQL_USER: userName
+      MYSQL_PASSWORD: pass
+    volumes:
+      - ./db/init/:/docker-entrypoint-initdb.d/
+      - ./db/schema/:/docker-entrypoint-initdb.d/schema/
+    networks:
+      - myapp-network
