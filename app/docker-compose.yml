@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: company
+      MYSQL_USER: youruser
+      MYSQL_PASSWORD: yourpassword
+    volumes:
+      - ./db/init/:/docker-entrypoint-initdb.d/
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:
+    driver: bridge

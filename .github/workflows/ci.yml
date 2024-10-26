@@ -1,0 +1,46 @@
+name: CI
+
+# main ブランチにマージされた時に実行
+on:
+  push:
+    branches:
+      - main  # main ブランチが対象
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: company
+          MYSQL_USER: youruser
+          MYSQL_PASSWORD: yourpassword
+        volumes:
+          - ./app:/app
+          - ./test:/test
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      # 2. Docker Compose をインストール
+      - name: Install Docker Compose
+        run: sudo apt-get install -y docker-compose
+
+      # 3. テストスクリプトを実行
+      - name: Run test script
+        run: bash ./test/test_db.sh
