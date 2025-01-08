@@ -6,6 +6,9 @@ import (
 	"employee-management/utils"
 	"encoding/json"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 // 全社員情報を取得するハンドラ関数
@@ -74,4 +77,30 @@ func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 
 	// 更新後の社員情報をレスポンスとして返す
 	utils.JSONRespose(w, updatedEmployee, http.StatusOK)
+}
+
+// 社員情報を削除するハンドラ関数
+//
+// URL: DELETE /employees/{id}
+// Response: 成功メッセージ
+func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
+	// URL パスから ID を取得
+	idStr := mux.Vars(r)["id"]
+
+	// ID を数値に変換
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		utils.ErrorResponse(w, "IDが無効です", http.StatusBadRequest)
+		return
+	}
+
+	// 社員情報削除関数を実行
+	err = models.DeleteEmployee(id)
+	if err != nil {
+		utils.ErrorResponse(w, "社員情報の削除に失敗しました", http.StatusInternalServerError)
+		return
+	}
+
+	// 成功レスポンス
+	utils.JSONRespose(w, map[string]string{"message": "従業員の削除に成功しました"}, http.StatusOK)
 }

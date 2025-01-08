@@ -65,3 +65,11 @@ func UpdateEmployee(emp Employee) (Employee, error) {
 
 	return updatedEmp, err
 }
+
+// 社員情報を削除する関数
+func DeleteEmployee(id int) error {
+	query := `DELETE FROM employees WHERE id = ?`
+
+	_, err := config.DB.Exec(query, id)
+	return err
+}
