@@ -16,6 +16,7 @@ func RegisterRoutes() *mux.Router {
 	// エンドポイントとそのハンドラを登録
 	router.HandleFunc("/employees", controllers.GetAllEmployees).Methods(http.MethodGet) // 社員情報の全取得
 	router.HandleFunc("/employees", controllers.AddEmployee).Methods(http.MethodPost)    // 新しい社員を登録
+	router.HandleFunc("/employees", controllers.UpdateEmployee).Methods(http.MethodPut)  // 社員情報を更新
 
 	// 他のエンドポイントをここに追加可能
 	// 例: router.HandleFunc("/employees/{id}", controllers.UpdateEmployee).Methods(http.MethodPut)

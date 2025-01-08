@@ -43,3 +43,25 @@ func AddEmployee(emp Employee) error {
 		emp.ID)
 	return err
 }
+
+// DBの社員情報を更新し、変更後のデータを返す関数
+func UpdateEmployee(emp Employee) (Employee, error) {
+	// クエリの定義
+	query := `
+		UPDATE employees
+		SET family_name = ?, first_name = ?, position = ?, department = ?
+		WHERE id = ?
+		RETURNING id, family_name, first_name, position, department
+	`
+	// クエリを実行し、更新後のデータを構造体に格納
+	var updatedEmp Employee
+	err := config.DB.QueryRow(query, emp.FamilyName, emp.FirstName, emp.Position, emp.Department, emp.ID).Scan(
+		&updatedEmp.ID,
+		&updatedEmp.FamilyName,
+		&updatedEmp.FirstName,
+		&updatedEmp.Position,
+		&updatedEmp.Department,
+	)
+
+	return updatedEmp, err
+}

@@ -32,7 +32,7 @@ func GetAllEmployees(w http.ResponseWriter, r *http.Request) {
 func AddEmployee(w http.ResponseWriter, r *http.Request) {
 	var emp models.Employee
 
-	// Bodyをデコードし、Employee構造体に格納
+	// BodyをJSONとしてデコードし、Employee構造体に格納
 	err := json.NewDecoder(r.Body).Decode(&emp)
 	if err != nil {
 		utils.ErrorResponse(w, "入力データが不正です", http.StatusBadRequest)
@@ -48,4 +48,30 @@ func AddEmployee(w http.ResponseWriter, r *http.Request) {
 
 	// 実行結果をJSON形式に変換してレスポンス
 	utils.JSONRespose(w, map[string]string{"message": "従業員の登録に成功しました"}, http.StatusOK)
+}
+
+// 社員情報を更新するハンドラ関数
+//
+// URL: PUT /employees/{id}
+// Body: JSONオブジェクト
+// Response: 成功メッセージ
+func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
+	var emp models.Employee
+
+	// Body を JSON としてデコードし、Employee 構造体に格納
+	err := json.NewDecoder(r.Body).Decode(&emp)
+	if err != nil {
+		utils.ErrorResponse(w, "入力データが不正です", http.StatusBadRequest)
+		return
+	}
+
+	// 社員情報更新関数実行
+	updatedEmployee, err := models.UpdateEmployee(emp)
+	if err != nil {
+		utils.ErrorResponse(w, "社員情報の更新に失敗しました", http.StatusInternalServerError)
+		return
+	}
+
+	// 更新後の社員情報をレスポンスとして返す
+	utils.JSONRespose(w, updatedEmployee, http.StatusOK)
 }
