@@ -1,4 +1,4 @@
-// DB接続を管理
+// DB接続を管理するファイル
 package config
 
 import (

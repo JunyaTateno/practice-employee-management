@@ -1,4 +1,4 @@
-// リクエストの処理（社員APIのコントローラー）
+// ハンドラ関数を定義するファイル
 package controllers
 
 import (
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// 全社員情報を取得するハンドラ
+// 全社員情報を取得するハンドラ関数
 //
 // URL: GET /employees
 // Response: 社員リストのJSON配列
@@ -20,10 +20,11 @@ func GetAllEmployees(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 取得結果をJSON形式に変換してレスポンス
 	utils.JSONRespose(w, employees, http.StatusOK)
 }
 
-// 社員情報を登録するハンドラ
+// 社員情報を登録するハンドラ関数
 //
 // URL: POST /employees
 // Body: JSONオブジェクト
@@ -31,7 +32,7 @@ func GetAllEmployees(w http.ResponseWriter, r *http.Request) {
 func AddEmployee(w http.ResponseWriter, r *http.Request) {
 	var emp models.Employee
 
-	// BodyをJSONとしてデコードし、Employee構造体に格納
+	// Bodyをデコードし、Employee構造体に格納
 	err := json.NewDecoder(r.Body).Decode(&emp)
 	if err != nil {
 		utils.ErrorResponse(w, "入力データが不正です", http.StatusBadRequest)
@@ -45,5 +46,6 @@ func AddEmployee(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 実行結果をJSON形式に変換してレスポンス
 	utils.JSONRespose(w, map[string]string{"message": "従業員の登録に成功しました"}, http.StatusOK)
 }

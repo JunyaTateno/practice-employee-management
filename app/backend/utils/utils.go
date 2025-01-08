@@ -1,4 +1,4 @@
-// 共通処理定義
+// 共通処理関数を定義するファイル
 package utils
 
 import (
