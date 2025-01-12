@@ -17,7 +17,7 @@ type Employee struct {
 // DBから全社員情報を取得する関数
 func GetAllEmployees() ([]Employee, error) {
 	// SELECTクエリ実行
-	rows, err := config.DB.Query("SELECT * FROM employees")
+	rows, err := config.DB.Query("SELECT id, family_name, first_name, position, department FROM employees")
 	if err != nil {
 		return nil, err
 	}
@@ -39,8 +39,8 @@ func GetAllEmployees() ([]Employee, error) {
 
 // DBに社員情報をインサートする関数
 func AddEmployee(emp Employee) error {
-	_, err := config.DB.Exec("INSERT INTO employees (id) VALUES (?)",
-		emp.ID)
+	_, err := config.DB.Exec("INSERT INTO employees (family_name, first_name, position, department) VALUES (?, ?, ?, ?)",
+		emp.FamilyName, emp.FirstName, emp.Position, emp.Department)
 	return err
 }
 
