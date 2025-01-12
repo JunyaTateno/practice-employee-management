@@ -19,6 +19,25 @@ services:
     networks:
       - myapp-network
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: youruser
+      DB_PASSWORD: yourpassword
+      DB_NAME: company
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - myapp-network
+
 networks:
   myapp-network:
     driver: bridge
