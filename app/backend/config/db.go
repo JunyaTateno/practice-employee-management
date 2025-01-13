@@ -45,7 +45,7 @@ func ConnectDatabase() {
 func CloseDatabase() {
 	err := DB.Close()
 	if err != nil {
-		log.Println("DB接続のクローズに失敗しました")
+		log.Println("DB接続のクローズに失敗しました:", err)
 	} else {
 		log.Println("DB接続のクローズに成功しました")
 	}

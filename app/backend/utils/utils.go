@@ -3,11 +3,13 @@ package utils
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
 // エラー時のレスポンスをJSON形式で返却する関数
-func ErrorResponse(w http.ResponseWriter, message string, status int) {
+func ErrorResponse(w http.ResponseWriter, message string, err error, status int) {
+	log.Printf("Error: %s: %v", message, err)
 	w.Header().Set("Content-Type", "appkication/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(map[string]string{"error": message})

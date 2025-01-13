@@ -19,7 +19,7 @@ func GetAllEmployees(w http.ResponseWriter, r *http.Request) {
 	// 社員情報取得関数実行
 	employees, err := models.GetAllEmployees()
 	if err != nil {
-		utils.ErrorResponse(w, "社員情報の取得に失敗しました", http.StatusInternalServerError)
+		utils.ErrorResponse(w, "社員情報の取得に失敗しました", err, http.StatusInternalServerError)
 		return
 	}
 
@@ -38,14 +38,14 @@ func AddEmployee(w http.ResponseWriter, r *http.Request) {
 	// BodyをJSONとしてデコードし、Employee構造体に格納
 	err := json.NewDecoder(r.Body).Decode(&emp)
 	if err != nil {
-		utils.ErrorResponse(w, "入力データが不正です", http.StatusBadRequest)
+		utils.ErrorResponse(w, "入力データが不正です", err, http.StatusBadRequest)
 		return
 	}
 
 	// 社員情報登録関数実行
 	err = models.AddEmployee(emp)
 	if err != nil {
-		utils.ErrorResponse(w, "社員情報の登録に失敗しました", http.StatusInternalServerError)
+		utils.ErrorResponse(w, "社員情報の登録に失敗しました", err, http.StatusInternalServerError)
 		return
 	}
 
@@ -55,7 +55,7 @@ func AddEmployee(w http.ResponseWriter, r *http.Request) {
 
 // 社員情報を更新するハンドラ関数
 //
-// URL: PUT /employees/{id}
+// URL: PUT /employees/
 // Body: JSONオブジェクト
 // Response: 成功メッセージ
 func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
@@ -64,14 +64,14 @@ func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	// Body を JSON としてデコードし、Employee 構造体に格納
 	err := json.NewDecoder(r.Body).Decode(&emp)
 	if err != nil {
-		utils.ErrorResponse(w, "入力データが不正です", http.StatusBadRequest)
+		utils.ErrorResponse(w, "入力データが不正です", err, http.StatusBadRequest)
 		return
 	}
 
 	// 社員情報更新関数実行
 	updatedEmployee, err := models.UpdateEmployee(emp)
 	if err != nil {
-		utils.ErrorResponse(w, "社員情報の更新に失敗しました", http.StatusInternalServerError)
+		utils.ErrorResponse(w, "社員情報の更新に失敗しました", err, http.StatusInternalServerError)
 		return
 	}
 
@@ -90,14 +90,14 @@ func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	// ID を数値に変換
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		utils.ErrorResponse(w, "IDが無効です", http.StatusBadRequest)
+		utils.ErrorResponse(w, "IDが無効です", err, http.StatusBadRequest)
 		return
 	}
 
 	// 社員情報削除関数を実行
 	err = models.DeleteEmployee(id)
 	if err != nil {
-		utils.ErrorResponse(w, "社員情報の削除に失敗しました", http.StatusInternalServerError)
+		utils.ErrorResponse(w, "社員情報の削除に失敗しました", err, http.StatusInternalServerError)
 		return
 	}
 
