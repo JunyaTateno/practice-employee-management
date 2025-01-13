@@ -46,24 +46,28 @@ func AddEmployee(emp Employee) error {
 
 // DBの社員情報を更新し、変更後のデータを返す関数
 func UpdateEmployee(emp Employee) (Employee, error) {
-	// クエリの定義
-	query := `
-		UPDATE employees
-		SET family_name = ?, first_name = ?, position = ?, department = ?
-		WHERE id = ?
-		RETURNING id, family_name, first_name, position, department
-	`
-	// クエリを実行し、更新後のデータを構造体に格納
-	var updatedEmp Employee
-	err := config.DB.QueryRow(query, emp.FamilyName, emp.FirstName, emp.Position, emp.Department, emp.ID).Scan(
-		&updatedEmp.ID,
-		&updatedEmp.FamilyName,
-		&updatedEmp.FirstName,
-		&updatedEmp.Position,
-		&updatedEmp.Department,
-	)
+	// UPDATE 文を実行
+	_, err := config.DB.Exec(`
+        UPDATE employees
+        SET family_name = ?, first_name = ?, position = ?, department = ?
+        WHERE id = ?
+    `, emp.FamilyName, emp.FirstName, emp.Position, emp.Department, emp.ID)
+	if err != nil {
+		return Employee{}, err
+	}
 
-	return updatedEmp, err
+	// 更新後のデータを取得
+	var updatedEmp Employee
+	err = config.DB.QueryRow(`
+        SELECT id, family_name, first_name, position, department
+        FROM employees
+        WHERE id = ?
+    `, emp.ID).Scan(&updatedEmp.ID, &updatedEmp.FamilyName, &updatedEmp.FirstName, &updatedEmp.Position, &updatedEmp.Department)
+	if err != nil {
+		return Employee{}, err
+	}
+
+	return updatedEmp, nil
 }
 
 // 社員情報を削除する関数
