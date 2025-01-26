@@ -1,10 +1,10 @@
 name: CI
 
-# main ブランチにマージされた時に実行
+# main ブランチに push または pull request があったときに実行
 on:
   push:
     branches:
-      - main  # main ブランチが対象
+      - main
   pull_request:
     branches:
       - main
@@ -12,25 +12,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    services:
-      db:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: company
-          MYSQL_USER: youruser
-          MYSQL_PASSWORD: yourpassword
-        volumes:
-          - ./app:/app
-          - ./test:/test
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
       # 1. リポジトリのコードをチェックアウト
@@ -41,6 +22,22 @@ jobs:
       - name: Install Docker Compose
         run: sudo apt-get install -y docker-compose
 
-      # 3. テストスクリプトを実行
-      - name: Run test script
+      # 3. Docker Compose でサービスを起動
+      - name: Start services with Docker Compose
+        run: docker-compose -f ./app/docker-compose.yml up -d
+
+      # 4. Docker コンテナの状態を確認
+      - name: List Docker containers
+        run: docker ps -a
+
+      # 5. test_db.sh を実行
+      - name: Run test_db.sh
         run: bash ./test/test_db.sh
+
+      # 6. test_backend.shを実行
+      - name: Run backend tests
+        run: bash ./test/test_backend.sh
+
+      # 7. Docker Compose を終了
+      - name: Stop services
+        run: docker-compose -f ./app/docker-compose.yml down
