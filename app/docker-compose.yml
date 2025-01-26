@@ -35,6 +35,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/employees || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - myapp-network
 

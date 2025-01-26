@@ -11,6 +11,9 @@ RUN go mod download
 # アプリケーションコードをコピー
 COPY . .
 
+# curl をインストール
+RUN apt-get update && apt-get install -y curl
+
 # アプリケーションのビルド
 RUN go build -o main.exe .
 

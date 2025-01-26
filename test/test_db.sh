@@ -19,15 +19,6 @@ handle_error() {
 # docker-compose.yml のパスを変数に保存 (/app/ 内にある場合)
 COMPOSE_FILE_PATH="-f ./app/docker-compose.yml"
 
-# スクリプト終了時に必ずコンテナを終了するように設定
-trap 'docker-compose $COMPOSE_FILE_PATH down' EXIT
-
-# Docker Composeでサービスを立ち上げる
-echo "Starting services with Docker Compose..."
-error_message=$(docker-compose $COMPOSE_FILE_PATH up -d 2>&1)
-if [ $? -ne 0 ]; then handle_error "Starting Docker Compose services" "$error_message"; fi
-echo "Docker Compose services started successfully."
-
 # MySQL接続情報
 DB_HOST="db"
 DB_PORT="3306"
