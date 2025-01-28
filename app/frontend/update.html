@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Employee</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body id="update-page">
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="view.html">View Employees</a></li>
+      <li><a href="register.html">Register Employee</a></li>
+      <li><a href="update.html">Update Employee</a></li>
+      <li><a href="delete.html">Delete Employee</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Update Employee</h1>
+    <form id="update-form">
+      <input type="number" id="employeeId" placeholder="Employee ID" required>
+      <input type="text" id="familyName" placeholder="New Family Name">
+      <input type="text" id="firstName" placeholder="New First Name">
+      <input type="text" id="position" placeholder="New Position">
+      <input type="text" id="department" placeholder="New Department">
+      <button type="submit">Update</button>
+    </form>
+  </div>
+</body>
+</html>
