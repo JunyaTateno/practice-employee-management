@@ -32,12 +32,12 @@ async function fetchEmployees() {
       throw new Error(`HTTPエラー！ステータス: ${response.status}`);
     }
 
-    const employees = await response.json();
+    let employees = await response.json(); // `let` に変更
     console.log("APIレスポンス JSON:", employees);
 
     if (!employees || !Array.isArray(employees)) {
       console.warn("無効なレスポンス形式: 配列を期待していましたが、受け取ったのは:", employees);
-      employees = [];
+      employees = []; // `null` の場合は `[]` に置き換え
     }
 
     const tableBody = document.querySelector("#employee-table tbody");
