@@ -83,6 +83,17 @@ function setupRegisterForm() {
       department: document.getElementById("department").value,
     };
 
+    // 確認ダイアログを表示
+    const confirmationMessage = `以下の情報で登録しますか？\n\n` +
+      `姓: ${newEmployee.familyName}\n` +
+      `名: ${newEmployee.firstName}\n` +
+      `役職: ${newEmployee.position}\n` +
+      `部署: ${newEmployee.department}`;
+    
+    if (!confirm(confirmationMessage)) {
+      return;
+    }
+
     console.log("🚀 新しい社員情報を送信中:", newEmployee);
 
     try {
