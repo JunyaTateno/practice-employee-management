@@ -1,29 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delete Employee</title>
+  <title>社員削除</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="app.js"></script>
 </head>
 <body id="delete-page">
   <nav>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="view.html">View Employees</a></li>
-      <li><a href="register.html">Register Employee</a></li>
-      <li><a href="update.html">Update Employee</a></li>
-      <li><a href="delete.html">Delete Employee</a></li>
+      <li><a href="index.html">ホーム</a></li>
+      <li><a href="view.html">社員一覧</a></li>
+      <li><a href="register.html">社員登録</a></li>
+      <li><a href="update.html">社員更新</a></li>
+      <li><a href="delete.html">社員削除</a></li>
     </ul>
   </nav>
 
   <div class="container">
-    <h1>Delete Employee</h1>
-    <form id="delete-form">
-      <input type="number" id="employeeId" placeholder="Employee ID" required>
-      <button type="submit">Delete</button>
-    </form>
+    <h1>社員削除</h1>
+    
+    <!-- 社員一覧テーブル -->
+    <table id="employee-table">
+      <thead>
+        <tr>
+          <th>選択</th>
+          <th>ID</th>
+          <th>姓</th>
+          <th>名</th>
+          <th>役職</th>
+          <th>部署</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JavaScriptでデータを挿入 -->
+      </tbody>
+    </table>
+
+    <!-- 削除ボタン -->
+    <button id="delete-button">選択した社員を削除</button>
   </div>
 </body>
 </html>

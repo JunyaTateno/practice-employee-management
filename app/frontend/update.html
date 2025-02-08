@@ -1,32 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Update Employee</title>
+  <title>社員情報更新</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="app.js"></script>
 </head>
 <body id="update-page">
   <nav>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="view.html">View Employees</a></li>
-      <li><a href="register.html">Register Employee</a></li>
-      <li><a href="update.html">Update Employee</a></li>
-      <li><a href="delete.html">Delete Employee</a></li>
+      <li><a href="index.html">ホーム</a></li>
+      <li><a href="view.html">社員一覧</a></li>
+      <li><a href="register.html">社員登録</a></li>
+      <li><a href="update.html">社員更新</a></li>
+      <li><a href="delete.html">社員削除</a></li>
     </ul>
   </nav>
 
   <div class="container">
-    <h1>Update Employee</h1>
+    <h1>社員情報更新</h1>
+    
+    <!-- 社員一覧テーブル -->
+    <table id="employee-table">
+      <thead>
+        <tr>
+          <th>選択</th>
+          <th>ID</th>
+          <th>姓</th>
+          <th>名</th>
+          <th>役職</th>
+          <th>部署</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JavaScriptでデータを挿入 -->
+      </tbody>
+    </table>
+
+    <!-- 更新フォーム -->
     <form id="update-form">
-      <input type="number" id="employeeId" placeholder="Employee ID" required>
-      <input type="text" id="familyName" placeholder="New Family Name">
-      <input type="text" id="firstName" placeholder="New First Name">
-      <input type="text" id="position" placeholder="New Position">
-      <input type="text" id="department" placeholder="New Department">
-      <button type="submit">Update</button>
+      <input type="hidden" id="employeeId">
+      <input type="text" id="familyName" placeholder="新しい姓">
+      <input type="text" id="firstName" placeholder="新しい名">
+      <input type="text" id="position" placeholder="新しい役職">
+      <input type="text" id="department" placeholder="新しい部署">
+      <button id="update-button">更新</button>
     </form>
   </div>
 </body>
