@@ -13,6 +13,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }  
 });  
 
+// 社員が選択されていない場合は「変更」「削除」ボタンを無効化
+function toggleActionButtons() {
+  const selectedEmployee = document.querySelector("input[name='selectedEmployee']:checked");
+  const updateButton = document.getElementById("update-button");
+  const deleteButton = document.getElementById("delete-button");
+
+  if (selectedEmployee) {
+    updateButton.disabled = false;
+    deleteButton.disabled = false;
+    updateButton.classList.remove("disabled-button");
+    deleteButton.classList.remove("disabled-button");
+  } else {
+    updateButton.disabled = true;
+    deleteButton.disabled = true;
+    updateButton.classList.add("disabled-button");
+    deleteButton.classList.add("disabled-button");
+  }
+}
+
+document.addEventListener("change", (event) => {
+  if (event.target.name === "selectedEmployee") {
+    toggleActionButtons();
+  }
+});
+
+document.addEventListener("DOMContentLoaded", toggleActionButtons);
+
 // 参照・変更・削除をまとめたページの処理
 function setupEmployeePage() {
   fetchEmployeesForSelection();

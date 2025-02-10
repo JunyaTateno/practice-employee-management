@@ -58,6 +58,13 @@ nav ul li a {
   background: #0056b3;
 }
 
+/* 無効化されたボタンのスタイル */
+.disabled-button {
+  background: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+}
+
 /* テーブルのスタイル */
 table {
   width: 100%;
