@@ -1,31 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Employee</title>
+  <title>社員登録</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="app.js"></script>
 </head>
 <body id="register-page">
   <nav>
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="view.html">View Employees</a></li>
-      <li><a href="register.html">Register Employee</a></li>
-      <li><a href="update.html">Update Employee</a></li>
-      <li><a href="delete.html">Delete Employee</a></li>
+      <li><a href="index.html">ホーム</a></li>
     </ul>
   </nav>
 
   <div class="container">
-    <h1>Register New Employee</h1>
+    <h1>社員登録</h1>
     <form id="employee-form">
-      <input type="text" id="familyName" placeholder="Family Name" required>
-      <input type="text" id="firstName" placeholder="First Name" required>
-      <input type="text" id="position" placeholder="Position" required>
-      <input type="text" id="department" placeholder="Department" required>
-      <button type="submit">Register</button>
+      <label for="familyName">姓:</label>
+      <input type="text" id="familyName" required>
+      
+      <label for="firstName">名:</label>
+      <input type="text" id="firstName" required>
+      
+      <label for="position">役職:</label>
+      <input type="text" id="position" required>
+      
+      <label for="department">部署:</label>
+      <input type="text" id="department" required>
+      
+      <button type="submit">登録</button>
     </form>
   </div>
 </body>
