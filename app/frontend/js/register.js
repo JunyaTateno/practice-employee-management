@@ -1,5 +1,5 @@
 import { API_URL } from "./constants.js";
-import { populateDropdowns } from "./utils.js";
+import { populateDropdowns, validateNameLength, validatePosition, validateDepartment } from "./utils.js";
 
 // 登録フォームの処理
 export function setupRegisterForm() {
@@ -9,12 +9,20 @@ export function setupRegisterForm() {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const newEmployee = {
-      familyName: document.getElementById("familyName").value,
-      firstName: document.getElementById("firstName").value,
-      position: document.getElementById("position").value,
-      department: document.getElementById("department").value,
-    };
+    const familyName = document.getElementById("familyName").value;
+    const firstName = document.getElementById("firstName").value;
+    const position = document.getElementById("position").value;
+    const department = document.getElementById("department").value;
+
+    // バリデーションチェック (失敗したら処理を中断)
+    if (!validateNameLength(familyName, "姓") || 
+        !validateNameLength(firstName, "名") || 
+        !validatePosition(position) || 
+        !validateDepartment(department)) {
+      return;
+    }
+
+    const newEmployee = { familyName, firstName, position, department };
 
     if (!confirm("以下の内容で登録しますか？\n\n" +
         `姓: ${newEmployee.familyName}\n` +

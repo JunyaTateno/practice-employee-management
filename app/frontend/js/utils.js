@@ -1,4 +1,4 @@
-import { positions, departments } from "./constants.js";
+import { positions, departments, NAME_MAX_LENGTH } from "./constants.js";
 
 // ボタンの有効化・無効化を切り替える関数
 export function toggleActionButtons() {
@@ -31,5 +31,32 @@ export function populateDropdowns(selectedPosition = "", selectedDepartment = ""
     departmentSelect.innerHTML = departments
       .map(dep => `<option value="${dep}" ${dep === selectedDepartment ? "selected" : ""}>${dep}</option>`)
       .join("");
-  }
+}
+
+// 名前の長さをチェック
+export function validateNameLength(name, fieldName) {
+    if (name.length > NAME_MAX_LENGTH) {
+      alert(`${fieldName} は${NAME_MAX_LENGTH}文字以内で入力してください。`);
+      return false;
+    }
+    return true;
+}
+  
+// 役職が有効かチェック
+export function validatePosition(position) {
+    if (!positions.includes(position)) {
+      alert("選択された役職が無効です。");
+      return false;
+    }
+    return true;
+}
+  
+// 部署が有効かチェック
+export function validateDepartment(department) {
+    if (!departments.includes(department)) {
+      alert("選択された部署が無効です。");
+      return false;
+    }
+    return true;
+}
   

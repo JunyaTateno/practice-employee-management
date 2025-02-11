@@ -1,5 +1,5 @@
 import { API_URL } from "./constants.js";
-import { populateDropdowns } from "./utils.js";
+import { populateDropdowns, validateNameLength, validatePosition, validateDepartment } from "./utils.js";
 
 // 変更ページに遷移する前に、選択された社員の情報を保存
 export function navigateToUpdatePage() {
@@ -20,7 +20,7 @@ export function navigateToUpdatePage() {
   
     localStorage.setItem("selectedEmployee", JSON.stringify(employeeData));
     window.location.href = "update.html";
-  }
+}
 
 // 変更ページで社員情報をロード
 export function loadUpdateForm() {
@@ -42,13 +42,21 @@ export function setupUpdateForm() {
   document.getElementById("update-form").addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const updatedEmployee = {
-      id: parseInt(document.getElementById("employeeId").value, 10),
-      familyName: document.getElementById("familyName").value,
-      firstName: document.getElementById("firstName").value,
-      position: document.getElementById("position").value,
-      department: document.getElementById("department").value,
-    };
+    const employeeId = parseInt(document.getElementById("employeeId").value, 10);
+    const familyName = document.getElementById("familyName").value;
+    const firstName = document.getElementById("firstName").value;
+    const position = document.getElementById("position").value;
+    const department = document.getElementById("department").value;
+
+    // バリデーションチェック (失敗したら処理を中断)
+    if (!validateNameLength(familyName, "姓") || 
+        !validateNameLength(firstName, "名") || 
+        !validatePosition(position) || 
+        !validateDepartment(department)) {
+      return;
+    }
+
+    const updatedEmployee = { id: employeeId, familyName, firstName, position, department };
 
     if (!confirm("社員情報を更新しますか？")) {
       return;
