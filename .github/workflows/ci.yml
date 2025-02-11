@@ -38,6 +38,10 @@ jobs:
       - name: Run backend tests
         run: bash ./test/test_backend.sh
 
-      # 7. Docker Compose を終了
+      # 7. test_frontend.sh を実行
+      - name: Run frontend tests
+        run: bash ./test/test_frontend.sh
+
+      # 8. Docker Compose を終了
       - name: Stop services
         run: docker-compose -f ./app/docker-compose.yml down
