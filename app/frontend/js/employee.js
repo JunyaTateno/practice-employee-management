@@ -16,6 +16,12 @@ export async function fetchEmployeesForSelection() {
     if (!response.ok) throw new Error(`HTTPエラー: ${response.status}`);
 
     const employees = await response.json();
+
+    if (!employees || !Array.isArray(employees)) {
+      console.warn("無効なレスポンス形式: 配列を期待していましたが、受け取ったのは:", employees);
+      return;
+    }
+    
     const tableBody = document.querySelector("#employee-table tbody");
     tableBody.innerHTML = "";
 
