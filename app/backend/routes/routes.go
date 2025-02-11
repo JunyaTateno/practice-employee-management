@@ -2,6 +2,7 @@
 package routes
 
 import (
+	"employee-management/constants"
 	"employee-management/controllers"
 	"net/http"
 
@@ -11,10 +12,14 @@ import (
 // CORSミドルウェアを定義
 func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// すべてのレスポンスに CORS ヘッダーを設定
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		origin := r.Header.Get("Origin")
+
+		// 許可されたオリジンの場合、CORSヘッダーを追加
+		if constants.AllowedOrigins[origin] {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		}
 
 		// `OPTIONS` メソッドのリクエストには即時レスポンスを返す
 		if r.Method == http.MethodOptions {
