@@ -7,6 +7,7 @@ import (
 	"employee-management/models"
 	"employee-management/routes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -144,7 +145,7 @@ func TestE2EAddEmployee(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-// テスト: 正常系- UpdateEmployee エンドポイント
+// テスト: 正常系 - UpdateEmployee エンドポイント
 func TestE2EUpdateEmployee(t *testing.T) {
 	db, mock, router := setupMockDB()
 	defer db.Close()
@@ -160,20 +161,21 @@ func TestE2EUpdateEmployee(t *testing.T) {
 	}
 
 	// モッククエリ: 更新処理
-	updateQuery := "UPDATE employees SET (.+)"
+	updateQuery := "UPDATE employees SET (.+) WHERE id = ?"
 	mock.ExpectExec(updateQuery).
 		WithArgs(updatedEmployee.FamilyName, updatedEmployee.FirstName, updatedEmployee.Position, updatedEmployee.Department, id).
 		WillReturnResult(sqlmock.NewResult(0, 1)) // RowsAffected: 1
 
 	// モッククエリ: 更新後のデータを取得
 	mockRows := generateMockRows([]models.Employee{updatedEmployee})
-	selectQuery := "SELECT (.+)"
+	selectQuery := "SELECT (.+) FROM employees WHERE id = ?"
 	mock.ExpectQuery(selectQuery).
 		WithArgs(id).
 		WillReturnRows(mockRows)
 
-	// HTTPリクエスト
-	w, req := makeRequest(t, http.MethodPut, "/employees", updatedEmployee)
+	// HTTPリクエスト (`PUT /employees/{id}`)
+	url := fmt.Sprintf("/employees/%d", id)
+	w, req := makeRequest(t, http.MethodPut, url, updatedEmployee)
 	router.ServeHTTP(w, req)
 
 	// レスポンスの検証
@@ -189,7 +191,11 @@ func TestE2EUpdateEmployee(t *testing.T) {
 	assert.NoError(t, err)
 
 	// レスポンスが更新後のデータと一致することを確認
-	assert.Equal(t, updatedEmployee, resBody)
+	assert.Equal(t, id, resBody.ID)
+	assert.Equal(t, updatedEmployee.FamilyName, resBody.FamilyName)
+	assert.Equal(t, updatedEmployee.FirstName, resBody.FirstName)
+	assert.Equal(t, updatedEmployee.Position, resBody.Position)
+	assert.Equal(t, updatedEmployee.Department, resBody.Department)
 
 	// モッククエリの期待値が満たされているか確認
 	err = mock.ExpectationsWereMet()

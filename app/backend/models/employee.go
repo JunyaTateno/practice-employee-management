@@ -2,6 +2,7 @@
 package models
 
 import (
+	"database/sql"
 	"employee-management/config"
 )
 
@@ -47,13 +48,22 @@ func AddEmployee(emp Employee) error {
 // DBの社員情報を更新し、変更後のデータを返す関数
 func UpdateEmployee(emp Employee) (Employee, error) {
 	// UPDATE 文を実行
-	_, err := config.DB.Exec(`
+	result, err := config.DB.Exec(`
         UPDATE employees
         SET family_name = ?, first_name = ?, position = ?, department = ?
         WHERE id = ?
     `, emp.FamilyName, emp.FirstName, emp.Position, emp.Department, emp.ID)
+
+	// 更新対象が存在しない場合
 	if err != nil {
 		return Employee{}, err
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return Employee{}, err
+	}
+	if rowsAffected == 0 {
+		return Employee{}, sql.ErrNoRows
 	}
 
 	// 更新後のデータを取得

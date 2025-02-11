@@ -5,7 +5,16 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 )
+
+// 環境変数を取得する関数
+func GetEnv(key, defaultValue string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return defaultValue
+}
 
 // エラー時のレスポンスをJSON形式で返却する関数
 func ErrorResponse(w http.ResponseWriter, message string, err error, status int) {

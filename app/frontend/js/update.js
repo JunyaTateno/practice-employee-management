@@ -11,7 +11,7 @@ export function navigateToUpdatePage() {
   
     const employeeRow = selectedEmployee.closest("tr").children;
     const employeeData = {
-      id: selectedEmployee.value,
+      id: parseInt(selectedEmployee.value, 10), // **IDを整数に変換**
       familyName: employeeRow[2].textContent,
       firstName: employeeRow[3].textContent,
       position: employeeRow[4].textContent,
@@ -37,7 +37,7 @@ export function loadUpdateForm() {
   populateDropdowns(employeeData.position, employeeData.department);
 }
 
-// 更新処理のセットアップ
+// 更新処理のセットアップ (RESTful API対応)
 export function setupUpdateForm() {
   document.getElementById("update-form").addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -56,14 +56,14 @@ export function setupUpdateForm() {
       return;
     }
 
-    const updatedEmployee = { id: employeeId, familyName, firstName, position, department };
+    const updatedEmployee = { familyName, firstName, position, department }; // **IDはURLに含めるため、Bodyには含めない**
 
     if (!confirm("社員情報を更新しますか？")) {
       return;
     }
 
     try {
-      const response = await fetch(`${API_URL}/employees`, {
+      const response = await fetch(`${API_URL}/employees/${employeeId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedEmployee),

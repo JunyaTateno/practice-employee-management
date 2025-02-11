@@ -61,8 +61,17 @@ func AddEmployee(w http.ResponseWriter, r *http.Request) {
 func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	var emp models.Employee
 
+	// URL から ID を取得
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		utils.ErrorResponse(w, "無効な社員IDです", err, http.StatusBadRequest)
+		return
+	}
+	emp.ID = id
+
 	// Body を JSON としてデコードし、Employee 構造体に格納
-	err := json.NewDecoder(r.Body).Decode(&emp)
+	err = json.NewDecoder(r.Body).Decode(&emp)
 	if err != nil {
 		utils.ErrorResponse(w, "入力データが不正です", err, http.StatusBadRequest)
 		return
