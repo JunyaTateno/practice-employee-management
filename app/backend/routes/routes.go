@@ -8,8 +8,27 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// CORSミドルウェアを定義
+func enableCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// すべてのレスポンスに CORS ヘッダーを設定
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// `OPTIONS` メソッドのリクエストには即時レスポンスを返す
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		// 通常のリクエストも CORS ヘッダーを持つようにする
+		next.ServeHTTP(w, r)
+	})
+}
+
 // マルチプレクサにエンドポイントとハンドラを登録する関数
-func RegisterRoutes() *mux.Router {
+func RegisterRoutes() http.Handler {
 	// 新しいルーターを作成
 	router := mux.NewRouter()
 
@@ -22,5 +41,6 @@ func RegisterRoutes() *mux.Router {
 	// 他のエンドポイントをここに追加可能
 	// 例: router.HandleFunc("/employees/{id}", controllers.UpdateEmployee).Methods(http.MethodPut)
 
-	return router
+	// CORS ミドルウェアを適用
+	return enableCORS(router)
 }

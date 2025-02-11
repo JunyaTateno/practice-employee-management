@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>社員登録</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body id="register-page">
+  <nav>
+    <ul>
+      <li><a href="index.html">ホーム</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>社員登録</h1>
+    <form id="employee-form">
+      <label for="familyName">姓:</label>
+      <input type="text" id="familyName" maxlength="30" required>
+      
+      <label for="firstName">名:</label>
+      <input type="text" id="firstName" maxlength="30" required>
+      
+      <label for="position">役職:</label>
+      <select id="position" required></select>
+      
+      <label for="department">部署:</label>
+      <select id="department" required></select>
+      
+      <button type="submit">登録</button>
+    </form>
+  </div>
+</body>
+</html>

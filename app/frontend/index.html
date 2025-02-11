@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>社員一覧</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body id="employee-management">
+  <nav>
+    <ul>
+      <li><a href="index.html">ホーム</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>社員一覧</h1>
+    
+    <!-- ボタンをリストの右上に配置 -->
+    <div class="button-container">
+      <button id="register-button" onclick="location.href='register.html'">登録</button>
+      <button id="update-button" onclick="location.href='update.html'">変更</button>
+      <button id="delete-button">削除</button>
+    </div>
+    
+    <!-- 社員一覧テーブル -->
+    <table id="employee-table">
+      <thead>
+        <tr>
+          <th>選択</th>
+          <th>ID</th>
+          <th>姓</th>
+          <th>名</th>
+          <th>役職</th>
+          <th>部署</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JavaScriptでデータを挿入 -->
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>社員情報更新</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body id="update-page">
+  <nav>
+    <ul>
+      <li><a href="index.html">ホーム</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>社員情報更新</h1>
+    <form id="update-form">
+      <label for="employeeId">社員ID:</label>
+      <input type="text" id="employeeId" disabled>
+
+      <label for="familyName">姓:</label>
+      <input type="text" id="familyName" maxlength="30" required>
+      
+      <label for="firstName">名:</label>
+      <input type="text" id="firstName" maxlength="30" required>
+      
+      <label for="position">役職:</label>
+      <select id="position" required></select>
+      
+      <label for="department">部署:</label>
+      <select id="department" required></select>
+      
+      <button type="submit">更新</button>
+    </form>
+  </div>
+</body>
+</html>
