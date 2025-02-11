@@ -88,7 +88,7 @@ form {
   margin-top: 20px;
 }
 
-form input {
+form input, form select {
   padding: 8px;
   margin: 5px;
   width: calc(100% - 22px);

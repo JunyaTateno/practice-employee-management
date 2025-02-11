@@ -98,6 +98,7 @@ async function fetchEmployeesForSelection() {
 // 社員登録処理のセットアップ
 function setupRegisterForm() {
   const form = document.getElementById("employee-form");
+  populateDropdowns();
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -171,8 +172,7 @@ function loadUpdateForm() {
   document.getElementById("employeeId").value = employeeData.id;
   document.getElementById("familyName").value = employeeData.familyName;
   document.getElementById("firstName").value = employeeData.firstName;
-  document.getElementById("position").value = employeeData.position;
-  document.getElementById("department").value = employeeData.department;
+  populateDropdowns(employeeData.position, employeeData.department);
 }
 
 // 更新処理のセットアップ
@@ -243,4 +243,16 @@ async function deleteSelectedEmployee() {
     console.error("社員情報の削除中にエラーが発生しました:", error);
     alert("社員情報の削除に失敗しました。もう一度試してください。");
   }
+}
+
+// プルダウンメニューの初期化
+function populateDropdowns(selectedPosition = "", selectedDepartment = "") {
+  const positions = ["一般社員", "主任", "課長", "部長"];
+  const departments = ["技術部", "経理部", "人事部", "営業部"];
+
+  const positionSelect = document.getElementById("position");
+  const departmentSelect = document.getElementById("department");
+
+  positionSelect.innerHTML = positions.map(pos => `<option value="${pos}" ${pos === selectedPosition ? "selected" : ""}>${pos}</option>`).join("");
+  departmentSelect.innerHTML = departments.map(dep => `<option value="${dep}" ${dep === selectedDepartment ? "selected" : ""}>${dep}</option>`).join("");
 }
