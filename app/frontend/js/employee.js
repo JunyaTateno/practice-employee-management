@@ -15,18 +15,18 @@ export async function fetchEmployeesForSelection() {
     const response = await fetch(`${API_URL}/employees`);
     if (!response.ok) throw new Error(`HTTPエラー: ${response.status}`);
 
-    const employees = await response.json();
+    let employees = await response.json();
 
     if (!employees || !Array.isArray(employees)) {
       console.warn("無効なレスポンス形式: 配列を期待していましたが、受け取ったのは:", employees);
-      return;
+      employees = []; // 空配列に設定
     }
     
     const tableBody = document.querySelector("#employee-table tbody");
     tableBody.innerHTML = "";
 
     if (employees.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="6">社員情報が見つかりません。</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="6">社員情報は0件です。</td></tr>`;
       return;
     }
 

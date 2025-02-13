@@ -18,8 +18,8 @@ import (
 
 // モックデータの定義
 var mockEmployeeData = []models.Employee{
-	{ID: 1, FamilyName: "Tanaka", FirstName: "Taro", Position: "Developer", Department: "IT"},
-	{ID: 2, FamilyName: "Suzuki", FirstName: "Hanako", Position: "Manager", Department: "HR"},
+	{ID: 1, FamilyName: "Tanaka", FirstName: "Taro", Position: "一般社員", Department: "技術部"},
+	{ID: 2, FamilyName: "Suzuki", FirstName: "Hanako", Position: "主任", Department: "経理部"},
 }
 
 // モックデータを生成する関数
@@ -106,8 +106,8 @@ func TestE2EAddEmployee(t *testing.T) {
 	// INSERT用の各項目
 	familyName := "Kato"
 	firstName := "Jiro"
-	position := "Designer"
-	department := "Design"
+	position := "一般社員"
+	department := "技術部"
 
 	// モッククエリの設定
 	insertQuery := "INSERT INTO employees (.+)"
@@ -156,9 +156,12 @@ func TestE2EUpdateEmployee(t *testing.T) {
 		ID:         id,
 		FamilyName: "Yamada",
 		FirstName:  "Taro",
-		Position:   "Team Leader",
-		Department: "Development",
+		Position:   "一般社員",
+		Department: "技術部",
 	}
+
+	// トランザクションの開始
+	mock.ExpectBegin()
 
 	// モッククエリ: 更新処理
 	updateQuery := "UPDATE employees SET (.+) WHERE id = ?"
@@ -172,6 +175,9 @@ func TestE2EUpdateEmployee(t *testing.T) {
 	mock.ExpectQuery(selectQuery).
 		WithArgs(id).
 		WillReturnRows(mockRows)
+
+	// トランザクションのコミット
+	mock.ExpectCommit()
 
 	// HTTPリクエスト (`PUT /employees/{id}`)
 	url := fmt.Sprintf("/employees/%d", id)
@@ -210,11 +216,17 @@ func TestE2EDeleteEmployee(t *testing.T) {
 	// 各項目を変数に定義
 	id := 1
 
+	// トランザクションの開始
+	mock.ExpectBegin()
+
 	// モッククエリの設定
 	deleteQuery := "DELETE FROM employees WHERE id = ?"
 	mock.ExpectExec(deleteQuery).
 		WithArgs(id).
 		WillReturnResult(sqlmock.NewResult(0, 1)) // RowsAffected: 1
+
+	// トランザクションのコミット
+	mock.ExpectCommit()
 
 	// HTTPリクエストの準備
 	w, req := makeRequest(t, http.MethodDelete, "/employees/1", nil)
