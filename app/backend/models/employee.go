@@ -47,32 +47,49 @@ func AddEmployee(emp Employee) error {
 
 // DBの社員情報を更新し、変更後のデータを返す関数
 func UpdateEmployee(emp Employee) (Employee, error) {
+	// トランザクション開始
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return Employee{}, err
+	}
+
 	// UPDATE 文を実行
-	result, err := config.DB.Exec(`
+	result, err := tx.Exec(`
         UPDATE employees
         SET family_name = ?, first_name = ?, position = ?, department = ?
         WHERE id = ?
     `, emp.FamilyName, emp.FirstName, emp.Position, emp.Department, emp.ID)
 
-	// 更新対象が存在しない場合
 	if err != nil {
+		tx.Rollback()
 		return Employee{}, err
 	}
+
+	// 更新対象が存在しない場合
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
+		tx.Rollback()
 		return Employee{}, err
 	}
 	if rowsAffected == 0 {
+		tx.Rollback()
 		return Employee{}, sql.ErrNoRows
 	}
 
 	// 更新後のデータを取得
 	var updatedEmp Employee
-	err = config.DB.QueryRow(`
+	err = tx.QueryRow(`
         SELECT id, family_name, first_name, position, department
         FROM employees
         WHERE id = ?
     `, emp.ID).Scan(&updatedEmp.ID, &updatedEmp.FamilyName, &updatedEmp.FirstName, &updatedEmp.Position, &updatedEmp.Department)
+	if err != nil {
+		tx.Rollback()
+		return Employee{}, err
+	}
+
+	// トランザクションをコミット
+	err = tx.Commit()
 	if err != nil {
 		return Employee{}, err
 	}
@@ -82,8 +99,35 @@ func UpdateEmployee(emp Employee) (Employee, error) {
 
 // 社員情報を削除する関数
 func DeleteEmployee(id int) error {
-	query := `DELETE FROM employees WHERE id = ?`
+	// トランザクション開始
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return err
+	}
 
-	_, err := config.DB.Exec(query, id)
-	return err
+	// DELETE 文を実行
+	result, err := tx.Exec("DELETE FROM employees WHERE id = ?", id)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// 削除対象が存在しない場合
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	if rowsAffected == 0 {
+		tx.Rollback()
+		return sql.ErrNoRows
+	}
+
+	// トランザクションをコミット
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
