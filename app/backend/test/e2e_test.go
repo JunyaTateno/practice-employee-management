@@ -160,6 +160,9 @@ func TestE2EUpdateEmployee(t *testing.T) {
 		Department: "技術部",
 	}
 
+	// トランザクションの開始
+	mock.ExpectBegin()
+
 	// モッククエリ: 更新処理
 	updateQuery := "UPDATE employees SET (.+) WHERE id = ?"
 	mock.ExpectExec(updateQuery).
@@ -172,6 +175,9 @@ func TestE2EUpdateEmployee(t *testing.T) {
 	mock.ExpectQuery(selectQuery).
 		WithArgs(id).
 		WillReturnRows(mockRows)
+
+	// トランザクションのコミット
+	mock.ExpectCommit()
 
 	// HTTPリクエスト (`PUT /employees/{id}`)
 	url := fmt.Sprintf("/employees/%d", id)
@@ -210,11 +216,17 @@ func TestE2EDeleteEmployee(t *testing.T) {
 	// 各項目を変数に定義
 	id := 1
 
+	// トランザクションの開始
+	mock.ExpectBegin()
+
 	// モッククエリの設定
 	deleteQuery := "DELETE FROM employees WHERE id = ?"
 	mock.ExpectExec(deleteQuery).
 		WithArgs(id).
 		WillReturnResult(sqlmock.NewResult(0, 1)) // RowsAffected: 1
+
+	// トランザクションのコミット
+	mock.ExpectCommit()
 
 	// HTTPリクエストの準備
 	w, req := makeRequest(t, http.MethodDelete, "/employees/1", nil)
