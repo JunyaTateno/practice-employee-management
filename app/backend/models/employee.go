@@ -4,6 +4,8 @@ package models
 import (
 	"database/sql"
 	"employee-management/config"
+	"employee-management/constants"
+	"employee-management/queries"
 )
 
 // Employee構造体の定義
@@ -17,8 +19,14 @@ type Employee struct {
 
 // DBから全社員情報を取得する関数
 func GetAllEmployees() ([]Employee, error) {
+	// キャッシュからSQLを取得
+	selectSQL, err := queries.GetSQL(constants.SelectQuery)
+	if err != nil {
+		return nil, err
+	}
+
 	// SELECTクエリ実行
-	rows, err := config.DB.Query("SELECT id, family_name, first_name, position, department FROM employees")
+	rows, err := config.DB.Query(selectSQL)
 	if err != nil {
 		return nil, err
 	}
@@ -40,13 +48,24 @@ func GetAllEmployees() ([]Employee, error) {
 
 // DBに社員情報をインサートする関数
 func AddEmployee(emp Employee) error {
-	_, err := config.DB.Exec("INSERT INTO employees (family_name, first_name, position, department) VALUES (?, ?, ?, ?)",
-		emp.FamilyName, emp.FirstName, emp.Position, emp.Department)
+	// キャッシュからSQLを取得
+	insertSQL, err := queries.GetSQL(constants.InsertQuery)
+	if err != nil {
+		return err
+	}
+
+	_, err = config.DB.Exec(insertSQL, emp.FamilyName, emp.FirstName, emp.Position, emp.Department)
 	return err
 }
 
 // DBの社員情報を更新し、変更後のデータを返す関数
 func UpdateEmployee(emp Employee) (Employee, error) {
+	// キャッシュからSQLを取得
+	updateSQL, err := queries.GetSQL(constants.UpdateQuery)
+	if err != nil {
+		return Employee{}, err
+	}
+
 	// トランザクション開始
 	tx, err := config.DB.Begin()
 	if err != nil {
@@ -54,11 +73,7 @@ func UpdateEmployee(emp Employee) (Employee, error) {
 	}
 
 	// UPDATE 文を実行
-	result, err := tx.Exec(`
-        UPDATE employees
-        SET family_name = ?, first_name = ?, position = ?, department = ?
-        WHERE id = ?
-    `, emp.FamilyName, emp.FirstName, emp.Position, emp.Department, emp.ID)
+	result, err := tx.Exec(updateSQL, emp.FamilyName, emp.FirstName, emp.Position, emp.Department, emp.ID)
 
 	if err != nil {
 		tx.Rollback()
@@ -99,6 +114,12 @@ func UpdateEmployee(emp Employee) (Employee, error) {
 
 // 社員情報を削除する関数
 func DeleteEmployee(id int) error {
+	// キャッシュからSQLを取得
+	deleteSQL, err := queries.GetSQL(constants.DeleteQuery)
+	if err != nil {
+		return err
+	}
+
 	// トランザクション開始
 	tx, err := config.DB.Begin()
 	if err != nil {
@@ -106,7 +127,7 @@ func DeleteEmployee(id int) error {
 	}
 
 	// DELETE 文を実行
-	result, err := tx.Exec("DELETE FROM employees WHERE id = ?", id)
+	result, err := tx.Exec(deleteSQL, id)
 	if err != nil {
 		tx.Rollback()
 		return err
