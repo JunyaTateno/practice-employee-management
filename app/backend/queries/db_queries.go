@@ -17,10 +17,11 @@ var (
 // アプリ起動時にSQLを一度だけ読み込む
 func init() {
 	sqlFiles := []string{
-		constants.SelectQuery,
-		constants.InsertQuery,
-		constants.UpdateQuery,
-		constants.DeleteQuery}
+		constants.SELECT_QUERY,
+		constants.SELECT_BY_ID_QUERY,
+		constants.INSERT_QUERY,
+		constants.UPDATE_QUERY,
+		constants.DELETE_QUERY}
 
 	for _, fileName := range sqlFiles {
 		filePath := filepath.Join("queries", fileName)

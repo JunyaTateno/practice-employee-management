@@ -42,6 +42,12 @@ func AddEmployee(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// バリデーションチェック
+	if err := models.ValidateEmployee(emp); err != nil {
+		utils.ErrorResponse(w, "無効な入力データです", err, http.StatusBadRequest)
+		return
+	}
+
 	// 社員情報登録関数実行
 	err = models.AddEmployee(emp)
 	if err != nil {
@@ -74,6 +80,12 @@ func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&emp)
 	if err != nil {
 		utils.ErrorResponse(w, "入力データが不正です", err, http.StatusBadRequest)
+		return
+	}
+
+	// バリデーションチェック
+	if err := models.ValidateEmployee(emp); err != nil {
+		utils.ErrorResponse(w, "無効な入力データです", err, http.StatusBadRequest)
 		return
 	}
 

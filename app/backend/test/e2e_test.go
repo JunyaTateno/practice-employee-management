@@ -18,8 +18,8 @@ import (
 
 // モックデータの定義
 var mockEmployeeData = []models.Employee{
-	{ID: 1, FamilyName: "Tanaka", FirstName: "Taro", Position: "Developer", Department: "IT"},
-	{ID: 2, FamilyName: "Suzuki", FirstName: "Hanako", Position: "Manager", Department: "HR"},
+	{ID: 1, FamilyName: "Tanaka", FirstName: "Taro", Position: "一般社員", Department: "技術部"},
+	{ID: 2, FamilyName: "Suzuki", FirstName: "Hanako", Position: "主任", Department: "経理部"},
 }
 
 // モックデータを生成する関数
@@ -106,8 +106,8 @@ func TestE2EAddEmployee(t *testing.T) {
 	// INSERT用の各項目
 	familyName := "Kato"
 	firstName := "Jiro"
-	position := "Designer"
-	department := "Design"
+	position := "一般社員"
+	department := "技術部"
 
 	// モッククエリの設定
 	insertQuery := "INSERT INTO employees (.+)"
@@ -156,8 +156,8 @@ func TestE2EUpdateEmployee(t *testing.T) {
 		ID:         id,
 		FamilyName: "Yamada",
 		FirstName:  "Taro",
-		Position:   "Team Leader",
-		Department: "Development",
+		Position:   "一般社員",
+		Department: "技術部",
 	}
 
 	// モッククエリ: 更新処理
