@@ -1,6 +1,12 @@
 // 定数定義
 package constants
 
+// ファイルパス
+var (
+	APP_ROOT   = "/app"
+	QUERY_ROOT = "queries"
+)
+
 // SQLファイル名
 var (
 	SELECT_QUERY       = "select_employee.sql"

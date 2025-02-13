@@ -24,7 +24,7 @@ func init() {
 		constants.DELETE_QUERY}
 
 	for _, fileName := range sqlFiles {
-		filePath := filepath.Join("queries", fileName)
+		filePath := filepath.Join(constants.APP_ROOT, constants.QUERY_ROOT, fileName)
 		sqlBytes, err := os.ReadFile(filePath)
 		if err != nil {
 			fmt.Printf("SQLファイルの読み込みに失敗しました: %s, エラー: %v\n", fileName, err)
