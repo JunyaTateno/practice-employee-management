@@ -1,5 +1,5 @@
 // バックエンドAPIのURL
-export const API_URL = "http://localhost:8080";
+export const API_URL = "/api";
 
 // 役職のリスト
 export const positions = ["一般社員", "主任", "課長", "部長"];
