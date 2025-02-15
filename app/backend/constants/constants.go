@@ -18,8 +18,8 @@ var (
 
 // CORSで許可するオリジン
 var ALLOWED_ORIGINS = map[string]bool{
-	"http://localhost":                 true, // 開発環境 (Nginx)
-	"https://your-production-site.com": true, // 本番環境 TODO: 本番環境のURLに変更する
+	"http://localhost":    true, // 開発環境 (Nginx)
+	"http://35.75.63.143": true, // 本番環境
 }
 
 // 社員名の最大文字数
