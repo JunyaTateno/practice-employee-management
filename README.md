@@ -4,7 +4,8 @@
 
 # URL
 http://35.75.63.143
-現時点では特定のタイミングでのみ公開しているため、基本的にはアクセスできません
+
+※ アクセスできるのは月～金の9:00~17:00のみです。
 
 # 使用技術
 | カテゴリー | 使用技術 |
@@ -12,10 +13,9 @@ http://35.75.63.143
 | Frintend | JavaScript |
 | backend | Go(1.23.3) |
 | DB | MySQL(9.1.0) |
-| インフラ | AWS EC2, Docker(27.2.0), Docker-compose |
+| インフラ | AWS EC2 |
 | CI/CD | Github Actions |
-| その他 | Git, Github, nginx |
+| その他 | Git, Github, Docker(27.2.0), Docker-compose, nginx |
 
 # インフラ構成図
-
-
+![インフラ構成図](https://github.com/user-attachments/assets/75b35f6b-d12f-48a0-86d6-9ecb172f3d7a)
